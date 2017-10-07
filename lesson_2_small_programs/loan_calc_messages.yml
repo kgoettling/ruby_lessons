@@ -1,0 +1,12 @@
+# Loan calculator messages
+
+welcome: 'Welcome to the Car Loan/Mortage Calculator!'
+p_loan: 'What is your total loan amount (in dollars)? '
+p_apr: 'What is your interest rate as a percentage on your loan? '
+p_loan_dur: 'What is your loan duration in years? '
+p_bad_input: 'That was not a valid number input, please try again. '
+out_payment: 'Your monthly payment is: $'
+out_duration: 'Your loan duration is '
+p_new_calc: 'Do you want to do a new loan calculation (y/n)? '
+out_end: 'Thanks for using loan calculator! '
+
