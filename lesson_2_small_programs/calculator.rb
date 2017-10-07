@@ -5,7 +5,6 @@
 # Use the Kernel.gets() method to retrieve user input and use the
 # Kernel.puts() method to display output
 
-
 # NOTES:
 
 # Input:
@@ -34,8 +33,25 @@
 # => check that gets.chomp isnumeric, if not reprompt
 # => puts case selection for operation
 
-def get_num()
+require 'yaml'
+
+MESSAGES = YAML.load_file('calculator_messages.yml')
+
+def prompt(message)
+  puts "=> #{message}"
+end
+
+def check_num
+  my_num = ''
+  loop do
     my_num = gets.chomp
+    if (my_num.to_i.to_s == my_num) || (my_num.to_f.to_s == my_num)
+      break
+    else
+      puts "That wasn't a valid number"
+    end
+  end
+  my_num
 end
 
 def calculate(num1, num2, operation)
@@ -51,23 +67,38 @@ def calculate(num1, num2, operation)
   end
 end
 
+prompt(MESSAGES['welcome'])
+
 op_arr = ['+', '-', '*', '/']
+cont_answer = 'y'
 
-puts "What is your first number?"
-num1 = get_num.to_f
+while cont_answer.downcase == 'y'
+  prompt 'What is your first number?'
+  num1 = check_num.to_f
+  operator_prompt = <<-MSG
+  What operation do you want to perform?
+    +) add
+    -) subtract
+    *) multiply
+    /) divide
+  MSG
+  prompt operator_prompt
+  operation = ''
+  loop do
+    operation = gets.chomp
+    break if op_arr.include?(operation)
+    puts "That wasn't one of the listed operations."
+    puts "Please choose '+', '-', '*' or '/'"
+  end
 
-puts "What operation do you want to perform? ('+', '-', '*', '/')"
-operation = ""
-loop do
-  operation = gets.chomp
-  break if op_arr.include?(operation)
-  puts "That wasn't one of the listed operations."
-  puts "Please choose '+', '-', '*' or '/'"
+  prompt 'What is your second number?'
+  num2 = check_num.to_f
+
+  answer = calculate(num1, num2, operation)
+
+  prompt "#{num1} #{operation} #{num2} = #{answer}!"
+  prompt 'Do you want to calculate some more? (y/n)'
+  cont_answer = gets.chomp
 end
 
-puts "What is your second number?"
-num2 = get_num.to_f
-
-answer = calculate(num1, num2, operation)
-
-puts "#{num1} #{operation} #{num2} = #{answer}!"
+prompt 'Thanks for using calculator!'
